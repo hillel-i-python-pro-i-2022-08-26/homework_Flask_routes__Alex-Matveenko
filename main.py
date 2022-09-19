@@ -1,10 +1,11 @@
-import json
 import csv
-from typing import Any, Generator
-from flask import Flask
+import json
 from pathlib import Path
-from faker import Faker
+from typing import Any, Generator
+
 import requests
+from faker import Faker
+from flask import Flask
 
 # Path_to_files__start
 HOME_PATH = Path(__file__).parents[1]
@@ -37,12 +38,12 @@ def file_view() -> str:
 # route_users_generate_by_default__start
 @app.route("/generate-users/")
 def users() -> Generator[str, Any, None]:
-    name_and_email = ""
+    all_str = ""
     for name in range(100):
         name = fake.name()
         email = f"{str(name.split()[1]).lower()}_example@mail.com"
-        name_and_email += f"<li>{name}: {email}</li>"
-    return (f"<ol>{string}</ol>" for string in name_and_email.split("\n"))
+        all_str += f"<li>{name}: {email}</li>"
+    return (f"<ol>{string}</ol>" for string in all_str.split("\n"))
 
 
 # route_users_generate_by_default__stop
