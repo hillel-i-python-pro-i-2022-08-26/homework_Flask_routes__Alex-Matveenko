@@ -10,7 +10,7 @@ from flask import Flask
 # Path_to_files__start
 HOME_PATH = Path(__file__).parents[1]
 FILES_PATH = HOME_PATH.joinpath("homework_Flask_routes__Alex-Matveenko")
-text_file = Path(FILES_PATH, "file_for_route.txt")
+f = Path(FILES_PATH, "file_for_route.txt")
 # Path_to_files__stop
 
 app = Flask(__name__)
@@ -29,7 +29,7 @@ def main_page():
 # route_requirements__start
 @app.route("/requirements/")
 def file_view() -> str:
-    return "".join(f"<p>{string}</p>" for string in text_file.read_text().split("\n"))
+    return "".join(f"<p>{i}</p>" for i in f.read_text().split("\n"))
 
 
 # route_requirements__stop
