@@ -20,13 +20,17 @@ fake = Faker()
 @app.route("/")
 def main_page():
     return "<h1>This is homework</h1>"
+
+
 # main_page__stop
 
 
 # route_requirements__start
-@app.route('/requirements/')
+@app.route("/requirements/")
 def file_view() -> str:
-    return "".join(f"<p>{string}</p>" for string in text_file.read_text().split('\n'))
+    return "".join(f"<p>{string}</p>" for string in text_file.read_text().split("\n"))
+
+
 # route_requirements__stop
 
 
@@ -38,7 +42,9 @@ def users() -> Generator[str, Any, None]:
         name = fake.name()
         email = f"{str(name.split()[1]).lower()}_example@mail.com"
         name_and_email += f"<li>{name}: {email}</li>"
-    return (f"<ol>{string}</ol>" for string in name_and_email.split('\n'))
+    return (f"<ol>{string}</ol>" for string in name_and_email.split("\n"))
+
+
 # route_users_generate_by_default__stop
 
 
@@ -50,12 +56,14 @@ def numerate_users(number: int) -> Generator[str, Any, None]:
         name = fake.name()
         email = f"{str(name.split()[1]).lower()}_example@mail.com"
         name_and_email += f"<li>{name}: {email}</li>"
-    return (f"<ol>{string}</ol>" for string in name_and_email.split('\n'))
+    return (f"<ol>{string}</ol>" for string in name_and_email.split("\n"))
+
+
 # route_users_generate_by_number__stop
 
 
 # route_space__start
-@app.route('/space')
+@app.route("/space")
 def space() -> str:
     url = "http://api.open-notify.org/astros.json"
     response = requests.get(url)
@@ -63,16 +71,18 @@ def space() -> str:
     json_file = json.loads(text)
     for key, value in json_file.items():
         return f"Количество космонавтов в данный момент: {value}"
+
+
 # route_space__stop
 
 
 # route_for_csv__start
-@app.route('/mean')
+@app.route("/mean")
 def mean() -> str:
     sum_of_height = 0
     sum_of_weight = 0
     number_of_index = 0
-    with open("people_data.csv", 'r', newline='') as csvfile:
+    with open("people_data.csv", "r", newline="") as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             sum_of_height += float(list(row.values())[1])
@@ -80,9 +90,13 @@ def mean() -> str:
             number_of_index += 1
         middle_height = sum_of_height / number_of_index
         middle_weight = sum_of_weight / number_of_index
-        return f"<li>Средний рост: {round(middle_height, 2)}.</li>" \
-               f"<li>Средний вес: {round(middle_weight, 2)}.</li>" \
-               f"<li>Количество отмерянных и взвешенных: {number_of_index}</li>"
+        return (
+            f"<li>Средний рост: {round(middle_height, 2)}.</li>"
+            f"<li>Средний вес: {round(middle_weight, 2)}.</li>"
+            f"<li>Количество отмерянных и взвешенных: {number_of_index}</li>"
+        )
+
+
 # route_for_csv__stop
 
 
