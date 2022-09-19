@@ -38,12 +38,12 @@ def file_view() -> str:
 # route_users_generate_by_default__start
 @app.route("/generate-users/")
 def users() -> Generator[str, Any, None]:
-    all_str = ""
+    res = ""
     for name in range(100):
         name = fake.name()
         email = f"{str(name.split()[1]).lower()}_example@mail.com"
-        all_str += f"<li>{name}: {email}</li>"
-    return (f"<ol>{i}</ol>" for i in all_str.split("\n"))
+        res += f"<li>{name}: {email}</li>"
+    return (f"<ol>{i}</ol>" for i in res.split("\n"))
 
 
 # route_users_generate_by_default__stop
