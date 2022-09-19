@@ -2,3 +2,4 @@
 .idea/
 .flake8
 people_data.csv
+.pre-commit.yaml
