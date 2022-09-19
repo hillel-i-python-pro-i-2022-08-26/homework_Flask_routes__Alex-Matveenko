@@ -43,7 +43,7 @@ def users() -> Generator[str, Any, None]:
         name = fake.name()
         email = f"{str(name.split()[1]).lower()}_example@mail.com"
         all_str += f"<li>{name}: {email}</li>"
-    return (f"<ol>{string}</ol>" for string in all_str.split("\n"))
+    return (f"<ol>{i}</ol>" for i in all_str.split("\n"))
 
 
 # route_users_generate_by_default__stop
