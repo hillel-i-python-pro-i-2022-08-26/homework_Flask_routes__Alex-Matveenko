@@ -8,5 +8,5 @@
 
 ##### It will:
 * Upgrade pip
-* instal requirements
+* install requirements
 * Run code
