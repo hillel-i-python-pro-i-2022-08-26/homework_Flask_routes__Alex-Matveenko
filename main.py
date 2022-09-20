@@ -44,21 +44,13 @@ def name_generate() -> Generator:
 
 # Name_generator__stop
 
-# route_users_generate_by_default__start
-@app.route("/generate-users/")
-def users() -> Generator[str, Any, None]:
-    for i in range(100):
-        for name in name_generate():
-            yield f"<p>{i + 1}. {name}<p>"
-
-
-# route_users_generate_by_default__stop
-
 
 # route_users_generate_by_number__start
 @app.route("/generate-users/<int:number>")
-def numerate_users(number: int) -> Generator[str, Any, None]:
-    for i in range(number):
+@app.route("/generate-users/")
+def numerate_users(number: int = 100) -> Generator[str, Any, None]:
+    num = number
+    for i in range(num):
         for name in name_generate():
             yield f"<p>{i + 1}. {name}</p>"
 

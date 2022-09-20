@@ -1,17 +1,18 @@
 # Homework of Alex Matveenko
+
 ***
+
 ### Flask routes and co. :)
+
 [![Generic badge](https://img.shields.io/badge/Flask-Done-<COLOR>.svg)](https://shields.io/)
 
 ### Enter to start
 
 `make flask-i-run`
 
-##### It will:
+### Enter to install requirements
 
-* Upgrade pip
-* install requirements
-* Run code
+`make init-dev`
 
 ### Main paths:
 
