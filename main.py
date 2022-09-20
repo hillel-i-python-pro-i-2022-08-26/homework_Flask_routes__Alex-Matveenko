@@ -8,9 +8,7 @@ from faker import Faker
 from flask import Flask
 
 # Path_to_files__start
-HOME_PATH = Path(__file__).parents[1]
-FILES_PATH = HOME_PATH.joinpath("homework_Flask_routes__Alex-Matveenko")
-f = Path(FILES_PATH, "file_for_route.txt")
+file_path = Path(Path("file_for_route.txt"))
 # Path_to_files__stop
 
 app = Flask(__name__)
@@ -29,21 +27,29 @@ def main_page():
 # route_requirements__start
 @app.route("/requirements/")
 def file_view() -> str:
-    return "".join(f"<p>{i}</p>" for i in f.read_text().split("\n"))
+    return "".join(f"<p>{i}</p>" for i in file_path.read_text().split("\n"))
 
 
 # route_requirements__stop
 
 
+# Name_generator__start
+def name_generate() -> Generator:
+    res = ""
+    name = fake.name().split()[0]
+    email = f"{str(name.split()[0]).lower()}_example@mail.com"
+    res += f"{name}: {email}"
+    yield res
+
+
+# Name_generator__stop
+
 # route_users_generate_by_default__start
 @app.route("/generate-users/")
 def users() -> Generator[str, Any, None]:
-    res = ""
-    for name in range(100):
-        name = fake.name()
-        email = f"{str(name.split()[1]).lower()}_example@mail.com"
-        res += f"<li>{name}: {email}</li>"
-    return (f"<ol>{i}</ol>" for i in res.split("\n"))
+    for i in range(100):
+        for name in name_generate():
+            yield f"<p>{i + 1}. {name}<p>"
 
 
 # route_users_generate_by_default__stop
@@ -52,12 +58,9 @@ def users() -> Generator[str, Any, None]:
 # route_users_generate_by_number__start
 @app.route("/generate-users/<int:number>")
 def numerate_users(number: int) -> Generator[str, Any, None]:
-    name_and_email = ""
-    for name in range(number):
-        name = fake.name()
-        email = f"{str(name.split()[1]).lower()}_example@mail.com"
-        name_and_email += f"<li>{name}: {email}</li>"
-    return (f"<ol>{string}</ol>" for string in name_and_email.split("\n"))
+    for i in range(number):
+        for name in name_generate():
+            yield f"<p>{i + 1}. {name}</p>"
 
 
 # route_users_generate_by_number__stop
@@ -70,8 +73,7 @@ def space() -> str:
     response = requests.get(url)
     text = response.text
     json_file = json.loads(text)
-    for key, value in json_file.items():
-        return f"Количество космонавтов в данный момент: {value}"
+    return f"Количество космонавтов в данный момент: {json_file['number']}"
 
 
 # route_space__stop
@@ -86,14 +88,14 @@ def mean() -> str:
     with open("people_data.csv", "r", newline="") as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
-            sum_of_height += float(list(row.values())[1])
-            sum_of_weight += float(list(row.values())[2])
+            sum_of_height += float(list(row.values())[1]) * 2.54
+            sum_of_weight += float(list(row.values())[2]) * 0.45
             number_of_index += 1
         middle_height = sum_of_height / number_of_index
         middle_weight = sum_of_weight / number_of_index
         return (
-            f"<li>Средний рост: {round(middle_height, 2)}.</li>"
-            f"<li>Средний вес: {round(middle_weight, 2)}.</li>"
+            f"<li>Средний рост: {round(middle_height, 2)} см.</li>"
+            f"<li>Средний вес: {round(middle_weight, 2)} кг.</li>"
             f"<li>Количество отмерянных и взвешенных: {number_of_index}</li>"
         )
 

@@ -4,9 +4,19 @@
 [![Generic badge](https://img.shields.io/badge/Flask-Done-<COLOR>.svg)](https://shields.io/)
 
 ### Enter to start
+
 `make flask-i-run`
 
 ##### It will:
+
 * Upgrade pip
 * install requirements
 * Run code
+
+### Main paths:
+
+* `/`
+* `/requirements/`
+* `generate-users`or `/generate-users/(here_int_you_want)/`
+* `/space`
+* `/mean`
