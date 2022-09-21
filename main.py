@@ -8,7 +8,7 @@ from faker import Faker
 from flask import Flask
 
 # Path_to_files__start
-file_path = Path(Path("file_for_route.txt"))
+file_path = Path("file_for_route.txt")
 # Path_to_files__stop
 
 app = Flask(__name__)
@@ -34,12 +34,10 @@ def file_view() -> str:
 
 
 # Name_generator__start
-def name_generate() -> Generator:
-    res = ""
+def name_generate() -> str:
     name = fake.name().split()[0]
     email = f"{str(name.split()[0]).lower()}_example@mail.com"
-    res += f"{name}: {email}"
-    yield res
+    yield f"{name}: {email}"
 
 
 # Name_generator__stop
@@ -49,8 +47,8 @@ def name_generate() -> Generator:
 @app.route("/generate-users/<int:number>")
 @app.route("/generate-users/")
 def numerate_users(number: int = 100) -> Generator[str, Any, None]:
-    num = number
-    for i in range(num):
+    num_of_people = number
+    for i in range(num_of_people):
         for name in name_generate():
             yield f"<p>{i + 1}. {name}</p>"
 
