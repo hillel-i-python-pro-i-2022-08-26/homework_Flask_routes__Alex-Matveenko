@@ -34,10 +34,10 @@ def file_view() -> str:
 
 
 # Name_generator__start
-def name_generate() -> str:
+def name_generate() -> tuple[str]:
     name = fake.name().split()[0]
     email = f"{str(name.split()[0]).lower()}_example@mail.com"
-    yield f"{name}: {email}"
+    return f"{name}: {email}",
 
 
 # Name_generator__stop
