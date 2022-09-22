@@ -34,10 +34,10 @@ def file_view() -> str:
 
 
 # Name_generator__start
-def name_generate() -> tuple[str]:
+def name_generate() -> str:
     name = fake.name().split()[0]
     email = f"{str(name.split()[0]).lower()}_example@mail.com"
-    return f"{name}: {email}",
+    return f"{name}: {email}"
 
 
 # Name_generator__stop
@@ -49,8 +49,7 @@ def name_generate() -> tuple[str]:
 def numerate_users(number: int = 100) -> Generator[str, Any, None]:
     num_of_people = number
     for i in range(num_of_people):
-        for name in name_generate():
-            yield f"<p>{i + 1}. {name}</p>"
+        yield f"<p>{i + 1}. {name_generate()}</p>"
 
 
 # route_users_generate_by_number__stop
