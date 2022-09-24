@@ -5,7 +5,6 @@ from applications.settings import db_path
 
 # Create_connection_to_database__start
 class DBConnection:
-
     def __init__(self):
         self._connection: sqlite3.Connection | None = None
 

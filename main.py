@@ -83,8 +83,11 @@ def mean() -> str:
 
 
 # Create_user_route__start
-@app.route('/create-users')
-@use_args({"name": fields.Str(required=True), "phone-number": fields.Int(required=True)}, location="query")
+@app.route("/users/create-user")
+@use_args(
+    {"name": fields.Str(required=True), "phone-number": fields.Int(required=True)},
+    location="query",
+)
 def create_users(args):
     with DBConnection() as connection:
         with connection:
@@ -97,6 +100,27 @@ def create_users(args):
 
 
 # Create_user_route__stop
+
+
+# Read_all_users_from_database__start
+@app.route("/users/all-users")
+def view_users():
+    with DBConnection() as connection:
+        phones_table = connection.execute(
+            """
+        SELECT * FROM phones;
+        """
+        ).fetchall()
+    return "<br>".join(
+        [
+            f'{user["phoneID"]}. {user["contactName"]}'
+            f' контактный телефон: {user["phoneValue"]}'
+            for user in phones_table
+        ]
+    )
+
+
+# Read_all_users_from_database__stop
 
 
 # Create_database_table

@@ -5,12 +5,14 @@ from applications.services.db_connection import DBConnection
 def create_table():
     with DBConnection() as connection:
         with connection:
-            connection.execute("""
+            connection.execute(
+                """
             CREATE TABLE IF NOT EXISTS phones (
             phoneID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
             contactName VARCHAR NOT NULL,
             phoneValue INTEGER NOT NULL
             )
-            """)
+            """
+            )
 
 # Create_database_table__start
