@@ -4,8 +4,11 @@ from typing import Any, Generator
 
 import requests
 from flask import Flask
+from webargs import fields
+from webargs.flaskparser import use_args
 
 from applications.services.database_table import create_table
+from applications.services.db_connection import DBConnection
 from applications.services.generate_users import name_generate
 from applications.settings import file_path
 
@@ -77,6 +80,24 @@ def mean() -> str:
 
 
 # route_for_csv__stop
+
+
+# Create_user_route__start
+@app.route('/create-users')
+@use_args({"name": fields.Str(required=True), "phone-number": fields.Int(required=True)}, location="query")
+def create_users(args):
+    with DBConnection() as connection:
+        with connection:
+            connection.execute(
+                """INSERT INTO phones(contactName, phoneValue)
+                VALUES (:contacName, :phoneValue);""",
+                dict(contacName=args["name"], phoneValue=args["phone-number"]),
+            )
+    return "Пользователь успешно создан!"
+
+
+# Create_user_route__stop
+
 
 # Create_database_table
 create_table()

@@ -21,3 +21,4 @@
 * `generate-users`or `/generate-users/(here_int_you_want)/`
 * `/space`
 * `/mean`
+* `/create-users?name=(some_text)&phone-number=(some_integer)`
