@@ -81,5 +81,6 @@ def mean() -> str:
 # Create_database_table
 create_table()
 
+# Run_project
 if __name__ == "__main__":
     app.run(debug=True)
