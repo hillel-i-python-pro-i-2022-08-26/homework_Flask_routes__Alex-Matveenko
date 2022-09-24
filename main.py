@@ -3,7 +3,7 @@ import json
 from typing import Any, Generator
 
 import requests
-from flask import Flask
+from flask import Flask, Response
 from webargs import fields
 from webargs.flaskparser import use_args
 
@@ -140,6 +140,38 @@ def view_user(phone_id: int) -> str:
 
 
 # Read_one_user__stop
+
+
+# Update_user__start
+@app.route('/users/update/<int:phone_id>')
+@use_args({"name": fields.Str(), "phone-number": fields.Int()}, location="query")
+def update_user(args, phone_id: int) -> Response | str:
+    with DBConnection() as connection:
+        with connection:
+            name = args.get('name')
+            value = args.get('phone-number')
+            # Check if arguments exists
+            if name is None and value is None:
+                return Response("Укажите хотя бы один аргумент", status=406)
+            # Check what argument is pass, and include to it list
+            request_args = []
+            if name is not None:
+                request_args.append("contactName=:name")
+            if value is not None:
+                request_args.append("phoneValue=:value")
+            # Update database with given arguments
+            connection.execute(
+                'UPDATE phones ' f'SET {", ".join(request_args)} ' 'WHERE phoneID=:phone_id;',
+                {
+                    "phone_id": phone_id,
+                    "name": name,
+                    "value": value,
+                }
+            )
+    return "Данные успешно обновлены."
+
+
+# Update_user__stop
 
 
 # Create_database_table
