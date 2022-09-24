@@ -21,3 +21,8 @@
 * `generate-users`or `/generate-users/(here_int_you_want)/`
 * `/space`
 * `/mean`
+* `/users/create-user?name=(some_text)&phone-number=(some_integer)`
+* `/users/all-users`
+* `/users/user/(some_int)`
+* `/users/update/(some_int)?name=(some_text)&phone-number=(some_integer)` *or you can change only name or phone number*
+* `/users/delete/(some_int)`

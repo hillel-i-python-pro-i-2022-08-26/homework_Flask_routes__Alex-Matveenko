@@ -9,3 +9,5 @@ pre-commit==2.20.0
 faker==14.2.0
 # Install for get request
 requests==2.28.1
+# Istall for requests with params, for sql routes
+webargs==8.2.0

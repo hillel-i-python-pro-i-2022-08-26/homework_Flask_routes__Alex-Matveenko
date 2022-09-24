@@ -1,18 +1,18 @@
 import csv
 import json
-from pathlib import Path
 from typing import Any, Generator
 
 import requests
-from faker import Faker
-from flask import Flask
+from flask import Flask, Response
+from webargs import fields
+from webargs.flaskparser import use_args
 
-# Path_to_files__start
-file_path = Path("file_for_route.txt")
-# Path_to_files__stop
+from applications.services.database_table import create_table
+from applications.services.db_connection import DBConnection
+from applications.services.generate_users import name_generate
+from applications.settings import file_path
 
 app = Flask(__name__)
-fake = Faker()
 
 
 # main_page__start
@@ -31,16 +31,6 @@ def file_view() -> str:
 
 
 # route_requirements__stop
-
-
-# Name_generator__start
-def name_generate() -> str:
-    name = fake.name().split()[0]
-    email = f"{str(name.split()[0]).lower()}_example@mail.com"
-    return f"{name}: {email}"
-
-
-# Name_generator__stop
 
 
 # route_users_generate_by_number__start
@@ -92,5 +82,118 @@ def mean() -> str:
 # route_for_csv__stop
 
 
+# Create_user_route__start
+@app.route("/users/create-user")
+@use_args(
+    {"name": fields.Str(required=True), "phone-number": fields.Int(required=True)},
+    location="query",
+)
+def create_users(args) -> str:
+    with DBConnection() as connection:
+        with connection:
+            connection.execute(
+                """INSERT INTO phones(contactName, phoneValue)
+                VALUES (:contacName, :phoneValue);""",
+                dict(contacName=args["name"], phoneValue=args["phone-number"]),
+            )
+    return "Пользователь успешно создан!"
+
+
+# Create_user_route__stop
+
+
+# Read_all_users_from_database__start
+@app.route("/users/all-users")
+def view_users() -> str:
+    with DBConnection() as connection:
+        phones_table = connection.execute(
+            """
+        SELECT * FROM phones;
+        """
+        ).fetchall()
+    return "<br>".join(
+        [
+            f'{user["phoneID"]}. {user["contactName"]}'
+            f' контактный телефон: {user["phoneValue"]}'
+            for user in phones_table
+        ]
+    )
+
+
+# Read_all_users_from_database__stop
+
+
+# Read_one_user__start
+@app.route("/users/user/<int:phone_id>")
+def view_user(phone_id: int) -> str:
+    with DBConnection() as connection:
+        user = connection.execute(
+            """
+        SELECT * FROM phones
+        WHERE (phoneID=:phone_id);""",
+            {"phone_id": phone_id},
+        ).fetchone()
+    return (
+        f"{user['phoneID']}. {user['contactName']} "
+        f"контактный телефон: {user['phoneValue']}"
+    )
+
+
+# Read_one_user__stop
+
+
+# Update_user__start
+@app.route("/users/update/<int:phone_id>")
+@use_args({"name": fields.Str(), "phone-number": fields.Int()}, location="query")
+def update_user(args, phone_id: int) -> Response | str:
+    with DBConnection() as connection:
+        with connection:
+            name = args.get("name")
+            value = args.get("phone-number")
+            # Check if arguments exists
+            if name is None and value is None:
+                return Response("Укажите хотя бы один аргумент", status=406)
+            # Check what argument is pass, and include to it list
+            request_args = []
+            if name is not None:
+                request_args.append("contactName=:name")
+            if value is not None:
+                request_args.append("phoneValue=:value")
+            # Update database with given arguments
+            connection.execute(
+                "UPDATE phones "
+                f'SET {", ".join(request_args)} '
+                "WHERE phoneID=:phone_id;",
+                {
+                    "phone_id": phone_id,
+                    "name": name,
+                    "value": value,
+                },
+            )
+    return "Данные успешно обновлены."
+
+
+# Update_user__stop
+
+
+# Delete_user__start
+@app.route("/users/delete/<int:phone_id>")
+def delete_user(phone_id: int) -> str:
+    with DBConnection() as connection:
+        with connection:
+            connection.execute(
+                "DELETE FROM phones WHERE phoneID=:phone_id",
+                {"phone_id": phone_id},
+            )
+    return "Пользователь успешно удален!"
+
+
+# Delete_user__stop
+
+
+# Create_database_table
+create_table()
+
+# Run_project
 if __name__ == "__main__":
     app.run(debug=True)
