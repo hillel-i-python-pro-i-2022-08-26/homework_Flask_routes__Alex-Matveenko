@@ -25,3 +25,4 @@
 * `/users/all-users`
 * `/users/user/(some_int)`
 * `/users/update/(some_int)?name=(some_text)&phone-number=(some_integer)` *or you can change only name or phone number*
+* `/users/delete/(some_int)`

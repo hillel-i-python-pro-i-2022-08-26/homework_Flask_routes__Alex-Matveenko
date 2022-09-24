@@ -143,13 +143,13 @@ def view_user(phone_id: int) -> str:
 
 
 # Update_user__start
-@app.route('/users/update/<int:phone_id>')
+@app.route("/users/update/<int:phone_id>")
 @use_args({"name": fields.Str(), "phone-number": fields.Int()}, location="query")
 def update_user(args, phone_id: int) -> Response | str:
     with DBConnection() as connection:
         with connection:
-            name = args.get('name')
-            value = args.get('phone-number')
+            name = args.get("name")
+            value = args.get("phone-number")
             # Check if arguments exists
             if name is None and value is None:
                 return Response("Укажите хотя бы один аргумент", status=406)
@@ -161,17 +161,34 @@ def update_user(args, phone_id: int) -> Response | str:
                 request_args.append("phoneValue=:value")
             # Update database with given arguments
             connection.execute(
-                'UPDATE phones ' f'SET {", ".join(request_args)} ' 'WHERE phoneID=:phone_id;',
+                "UPDATE phones "
+                f'SET {", ".join(request_args)} '
+                "WHERE phoneID=:phone_id;",
                 {
                     "phone_id": phone_id,
                     "name": name,
                     "value": value,
-                }
+                },
             )
     return "Данные успешно обновлены."
 
 
 # Update_user__stop
+
+
+# Delete_user__start
+@app.route("/users/delete/<int:phone_id>")
+def delete_user(phone_id: int) -> str:
+    with DBConnection() as connection:
+        with connection:
+            connection.execute(
+                "DELETE FROM phones WHERE phoneID=:phone_id",
+                {"phone_id": phone_id},
+            )
+    return "Пользователь успешно удален!"
+
+
+# Delete_user__stop
 
 
 # Create_database_table
