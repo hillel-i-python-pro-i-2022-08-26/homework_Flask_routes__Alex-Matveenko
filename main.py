@@ -1,18 +1,15 @@
 import csv
 import json
-from pathlib import Path
 from typing import Any, Generator
 
 import requests
-from faker import Faker
 from flask import Flask
 
-# Path_to_files__start
-file_path = Path("file_for_route.txt")
-# Path_to_files__stop
+from applications.services.database_table import create_table
+from applications.services.generate_users import name_generate
+from applications.settings import file_path
 
 app = Flask(__name__)
-fake = Faker()
 
 
 # main_page__start
@@ -31,16 +28,6 @@ def file_view() -> str:
 
 
 # route_requirements__stop
-
-
-# Name_generator__start
-def name_generate() -> str:
-    name = fake.name().split()[0]
-    email = f"{str(name.split()[0]).lower()}_example@mail.com"
-    return f"{name}: {email}"
-
-
-# Name_generator__stop
 
 
 # route_users_generate_by_number__start
@@ -91,6 +78,8 @@ def mean() -> str:
 
 # route_for_csv__stop
 
+# Create_database_table
+create_table()
 
 if __name__ == "__main__":
     app.run(debug=True)

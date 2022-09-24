@@ -1,2 +1,4 @@
 .venv/
 .idea/
+data_base/**
+!db/.gitkeep
