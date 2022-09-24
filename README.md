@@ -23,3 +23,4 @@
 * `/mean`
 * `/users/create-user?name=(some_text)&phone-number=(some_integer)`
 * `/users/all-users`
+* `/users/user/(some_int)`

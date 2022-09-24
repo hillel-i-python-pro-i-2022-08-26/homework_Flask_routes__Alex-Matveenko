@@ -88,7 +88,7 @@ def mean() -> str:
     {"name": fields.Str(required=True), "phone-number": fields.Int(required=True)},
     location="query",
 )
-def create_users(args):
+def create_users(args) -> str:
     with DBConnection() as connection:
         with connection:
             connection.execute(
@@ -104,7 +104,7 @@ def create_users(args):
 
 # Read_all_users_from_database__start
 @app.route("/users/all-users")
-def view_users():
+def view_users() -> str:
     with DBConnection() as connection:
         phones_table = connection.execute(
             """
@@ -121,6 +121,25 @@ def view_users():
 
 
 # Read_all_users_from_database__stop
+
+
+# Read_one_user__start
+@app.route("/users/user/<int:phone_id>")
+def view_user(phone_id: int) -> str:
+    with DBConnection() as connection:
+        user = connection.execute(
+            """
+        SELECT * FROM phones
+        WHERE (phoneID=:phone_id);""",
+            {"phone_id": phone_id},
+        ).fetchone()
+    return (
+        f"{user['phoneID']}. {user['contactName']} "
+        f"контактный телефон: {user['phoneValue']}"
+    )
+
+
+# Read_one_user__stop
 
 
 # Create_database_table
