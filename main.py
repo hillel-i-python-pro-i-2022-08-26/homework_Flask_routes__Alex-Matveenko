@@ -15,25 +15,16 @@ from applications.settings import file_path
 app = Flask(__name__)
 
 
-# main_page__start
 @app.route("/")
 def main_page():
     return "<h1>This is homework</h1>"
 
 
-# main_page__stop
-
-
-# route_requirements__start
 @app.route("/requirements/")
 def file_view() -> str:
     return "".join(f"<p>{i}</p>" for i in file_path.read_text().split("\n"))
 
 
-# route_requirements__stop
-
-
-# route_users_generate_by_number__start
 @app.route("/generate-users/<int:number>")
 @app.route("/generate-users/")
 def numerate_users(number: int = 100) -> Generator[str, Any, None]:
@@ -42,10 +33,6 @@ def numerate_users(number: int = 100) -> Generator[str, Any, None]:
         yield f"<p>{i + 1}. {name_generate()}</p>"
 
 
-# route_users_generate_by_number__stop
-
-
-# route_space__start
 @app.route("/space")
 def space() -> str:
     url = "http://api.open-notify.org/astros.json"
@@ -55,10 +42,6 @@ def space() -> str:
     return f"Количество космонавтов в данный момент: {json_file['number']}"
 
 
-# route_space__stop
-
-
-# route_for_csv__start
 @app.route("/mean")
 def mean() -> str:
     sum_of_height = 0
@@ -79,10 +62,6 @@ def mean() -> str:
         )
 
 
-# route_for_csv__stop
-
-
-# Create_user_route__start
 @app.route("/users/create-user")
 @use_args(
     {"name": fields.Str(required=True), "phone-number": fields.Int(required=True)},
@@ -99,10 +78,6 @@ def create_users(args) -> str:
     return "Пользователь успешно создан!"
 
 
-# Create_user_route__stop
-
-
-# Read_all_users_from_database__start
 @app.route("/users/all-users")
 def view_users() -> str:
     with DBConnection() as connection:
@@ -120,10 +95,6 @@ def view_users() -> str:
     )
 
 
-# Read_all_users_from_database__stop
-
-
-# Read_one_user__start
 @app.route("/users/user/<int:phone_id>")
 def view_user(phone_id: int) -> str:
     with DBConnection() as connection:
@@ -139,10 +110,6 @@ def view_user(phone_id: int) -> str:
     )
 
 
-# Read_one_user__stop
-
-
-# Update_user__start
 @app.route("/users/update/<int:phone_id>")
 @use_args({"name": fields.Str(), "phone-number": fields.Int()}, location="query")
 def update_user(args, phone_id: int) -> Response | str:
@@ -173,10 +140,6 @@ def update_user(args, phone_id: int) -> Response | str:
     return "Данные успешно обновлены."
 
 
-# Update_user__stop
-
-
-# Delete_user__start
 @app.route("/users/delete/<int:phone_id>")
 def delete_user(phone_id: int) -> str:
     with DBConnection() as connection:
@@ -186,9 +149,6 @@ def delete_user(phone_id: int) -> str:
                 {"phone_id": phone_id},
             )
     return "Пользователь успешно удален!"
-
-
-# Delete_user__stop
 
 
 # Create_database_table
