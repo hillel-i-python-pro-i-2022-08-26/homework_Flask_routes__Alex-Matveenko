@@ -67,7 +67,7 @@ def mean() -> str:
     {"name": fields.Str(required=True), "phone-number": fields.Int(required=True)},
     location="query",
 )
-def create_users(args) -> str:
+def create_user(args) -> str:
     with DBConnection() as connection:
         with connection:
             connection.execute(

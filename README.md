@@ -4,7 +4,7 @@
 
 ### Flask routes and co. :)
 
-[![Generic badge](https://img.shields.io/badge/Flask-Done-<COLOR>.svg)](https://shields.io/)
+![Main_workflow](https://github.com/hillel-i-python-pro-i-2022-08-26/home_work_docker__alex-matveenko/actions/workflows/main-workflow.yml/badge.svg)
 
 ### Enter to start
 
